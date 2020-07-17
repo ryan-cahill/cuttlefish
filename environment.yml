@@ -1,0 +1,5 @@
+interfaces:
+  # app: ${ components['examples/cuttlefish'].interfaces.app.url }
+
+components:
+  examples/cuttlefish: file:./

@@ -2,7 +2,7 @@ development:
   adapter: postgresql
   database: cuttlefish_development
   username: postgres
-  host: db
+  host: examples.cuttlefish.db.latest # TODO: is there a way to update this elsewhere?
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

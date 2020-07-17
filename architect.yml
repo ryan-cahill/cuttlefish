@@ -1,0 +1,111 @@
+name: examples/cuttlefish
+author: Architect.io
+
+interfaces:
+  # app: ${ services.app.interfaces.main.url }
+
+services:
+  web:
+    build:
+      context: ./
+      dockerfile: ./dockerfiles/web
+    description: Frontend application for cuttlefish
+    language: ruby
+    interfaces:
+      main: 3000
+    environment:
+      PORT: ${ services.web.interfaces.main.port }
+    debug:
+      volumes:
+        app:
+          host_path: ./
+          mount_path: /app
+
+    # command: bundle exec rake db:setup
+    # TODO: links: db, redis, smtp
+    # TODO: add migrations as part of start command?
+
+  # guard:
+  #   build:
+  #     context: ./dockerfiles/web
+  #   description: TODO
+  #   language: ruby
+  #   # interfaces:
+  #   #   main:
+  #   command: bundle exec guard --no-interactions
+    # volumes:
+    #   app:
+    #     host_path: ./
+    #     mount_path: /app
+  #   # TODO: links to db
+
+  db:
+    image: postgres:10.5
+    interfaces:
+      postgres: 5432
+    environment: # not included in docker-compose
+      POSTGRES_USER: postgres
+      POSTGRES_DB: cuttlefish_development
+
+  smtp:
+    build:
+      context: ./
+      dockerfile: ./dockerfiles/smtp
+    description: TODO
+    language: ruby
+    interfaces:
+      main: 2525
+    debug:
+      volumes:
+        app:
+          host_path: ./
+          mount_path: /app
+
+  redis:
+    image: redis:4.0 # TODO: link this
+    interfaces:
+      main: 6379
+
+  # worker:
+  #   build:
+  #     context: ./dockerfiles/worker
+  #   description: TODO
+  #   language: ruby
+    # volumes:
+    #   app:
+    #     host_path: ./
+    #     mount_path: /app
+  #   # links: TODO db redis postfix
+
+  # postfix:
+  #   image: juanluisbaptiste/postfix
+  #   environment:
+  #     - SMTP_SERVER=mailcatcher
+  #     - SMTP_PORT=1025 # TODO: where does this go?
+  #     - SMTP_USERNAME=foo@bar.com
+  #     - SMTP_PASSWORD=XXXXXXXX
+  #     - SERVER_HOSTNAME=cuttlefish.io
+    # volumes:
+    #   log:
+    #     host_path: ./postfix_log
+    #     mount_path: /var/log
+  #   links: # TODO mailcatcher
+
+  # mailcatcher:
+  #   build:
+  #     context: ./dockerfiles/mailcatcher
+  #   description: TODO
+  #   language: ruby
+  #   interfaces:
+  #     main: 1080
+
+  # log:
+  #   build:
+  #     context: ./dockerfiles/log
+  #   # links db
+    # volumes:
+    #   app:
+    #     host_path: ./
+    #     mount_path: /app
+
+# TODO: debug blocks, volumes, env vars in place of links
