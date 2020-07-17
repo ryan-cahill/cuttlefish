@@ -2,7 +2,7 @@ name: examples/cuttlefish
 author: Architect.io
 
 interfaces:
-  # app: ${ services.app.interfaces.main.url }
+  web: ${ services.web.interfaces.main.url }
 
 services:
   web:
