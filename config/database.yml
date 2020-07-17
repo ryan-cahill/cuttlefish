@@ -11,4 +11,4 @@ test:
   adapter: postgresql
   database: cuttlefish_test
   username: postgres
-  host: db
+  host: examples.cuttlefish.db.latest # TODO: update this and above and make them parameters.... somehow

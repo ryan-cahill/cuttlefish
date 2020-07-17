@@ -47,7 +47,7 @@ wu_team.admins.create!(
 acting_app = smart_team.apps.create!(
   name: "Acting Twins",
   legacy_dkim_selector: true,
-  dkim_enabled: true,
+  dkim_enabled: false, # https://github.com/mlandauer/cuttlefish/issues/340
   from_domain: "foo.com"
 )
 key_app = smart_team.apps.create!(name: "Key Popping Street Artists")

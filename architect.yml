@@ -20,7 +20,6 @@ services:
         app:
           host_path: ./
           mount_path: /app
-
     # command: bundle exec rake db:setup
     # TODO: links: db, redis, smtp
     # TODO: add migrations as part of start command?
@@ -43,9 +42,9 @@ services:
     image: postgres:10.5
     interfaces:
       postgres: 5432
-    environment: # not included in docker-compose
-      POSTGRES_USER: postgres
-      POSTGRES_DB: cuttlefish_development
+    # environment: # not included in docker-compose
+    #   POSTGRES_USER: postgres
+    #   POSTGRES_DB: cuttlefish_development
 
   smtp:
     build:
