@@ -40,9 +40,6 @@ services:
     image: postgres:10.5
     interfaces:
       postgres: 5432
-    # environment: # not included in docker-compose
-    #   POSTGRES_USER: postgres
-    #   POSTGRES_DB: cuttlefish_development
 
   smtp:
     build:
@@ -74,19 +71,20 @@ services:
     #     mount_path: /app
   #   # links: TODO db redis postfix
 
-  # postfix:
-  #   image: juanluisbaptiste/postfix
-  #   environment:
-  #     - SMTP_SERVER=mailcatcher
-  #     - SMTP_PORT=1025 # TODO: where does this go?
-  #     - SMTP_USERNAME=foo@bar.com
-  #     - SMTP_PASSWORD=XXXXXXXX
-  #     - SERVER_HOSTNAME=cuttlefish.io
-    # volumes:
-    #   log:
-    #     host_path: ./postfix_log
-    #     mount_path: /var/log
-  #   links: # TODO mailcatcher
+  postfix:
+    image: juanluisbaptiste/postfix
+    environment:
+      SMTP_SERVER: ${ services.mailcatcher.interfaces.smtp.host } examples.cuttlefish.mailcatcher.latest # TODO: architect host
+      SMTP_PORT: ${ services.mailcatcher.interfaces.smtp.port }  # TODO: architect port
+      SMTP_USERNAME: foo@bar.com
+      SMTP_PASSWORD: XXXXXXXX
+      SERVER_HOSTNAME: cuttlefish.io
+    interfaces:
+    debug:
+      volumes:
+        postfix_logs:
+          host_path: ./postfix_log
+          mount_path: /var/log
 
   mailcatcher:
     build:
@@ -96,19 +94,21 @@ services:
     language: ruby
     interfaces:
       main: 1080
-    # debug:
-    #   volumes:
-    #     app:
-    #       host_path: ./
-    #       mount_path: /app
+      smtp: 1025
 
-  # log:
-  #   build:
-  #     context: ./dockerfiles/log.Dockerfile
-  #   # links db
-    # volumes:
-    #   app:
-    #     host_path: ./
-    #     mount_path: /app
+  log:
+    build:
+      context: ./
+      dockerfile: ./dockerfiles/log.Dockerfile
+    interfaces:
+    debug:
+      volumes:
+        app:
+          host_path: ./
+          mount_path: /app
+        postfix_logs:
+          host_path: ./postfix_log
+          mount_path: /var/log
+    # links db ?
 
 # TODO: debug blocks, volumes, env vars in place of links

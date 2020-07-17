@@ -12,5 +12,3 @@ RUN apt-get update && apt-get install -y \
   nodejs
 
 CMD ["/bin/sh", "-c", "bundle exec rake db:setup && rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0"]
-
-# TODO: add Dockerfile suffix to dockerfiles in current dir

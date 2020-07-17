@@ -25,7 +25,7 @@ class CuttlefishSmtpServer
     @connections = []
   end
 
-  def start(host = "localhost", port = 1025)
+  def start(host = "localhost", port = 1025) # TODO: why is this hardcoded? is this just a default that can be set up the chain?
     trap("TERM") do
       puts "Received SIGTERM"
       stop
