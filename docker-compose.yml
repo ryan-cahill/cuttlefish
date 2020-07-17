@@ -3,7 +3,7 @@ services:
   web:
     build:
       context: .
-      dockerfile: dockerfiles/web
+      dockerfile: dockerfiles/web.Dockerfile
     volumes:
       - .:/app:cached
     ports:
@@ -16,7 +16,7 @@ services:
   guard:
     build:
       context: .
-      dockerfile: dockerfiles/web
+      dockerfile: dockerfiles/web.Dockerfile
     volumes:
       - .:/app:cached
     links:
@@ -31,7 +31,7 @@ services:
   smtp:
     build:
       context: .
-      dockerfile: dockerfiles/smtp
+      dockerfile: dockerfiles/smtp.Dockerfile
     volumes:
       - .:/app:cached
     ports:
@@ -43,7 +43,7 @@ services:
   worker:
     build:
       context: .
-      dockerfile: dockerfiles/worker
+      dockerfile: dockerfiles/worker.Dockerfile
     volumes:
       - .:/app:cached
     links:
@@ -52,7 +52,7 @@ services:
       - postfix
 
   postfix:
-    image: juanluisbaptiste/postfix
+    image: juanluisbaptiste/postfix.Dockerfile
     environment:
       - SMTP_SERVER=mailcatcher
       - SMTP_PORT=1025
@@ -69,14 +69,14 @@ services:
   mailcatcher:
     build:
       context: .
-      dockerfile: dockerfiles/mailcatcher
+      dockerfile: dockerfiles/mailcatcher.Dockerfile
     ports:
       - "1080:1080"
 
   log:
     build:
       context: .
-      dockerfile: dockerfiles/log
+      dockerfile: dockerfiles/log.Dockerfile
     volumes:
       - .:/app:cached
       - ./postfix_log:/var/log:cached

@@ -8,7 +8,7 @@ services:
   web:
     build:
       context: ./
-      dockerfile: ./dockerfiles/web
+      dockerfile: ./dockerfiles/web.Dockerfile
     description: Frontend application for cuttlefish
     language: ruby
     interfaces:
@@ -26,7 +26,7 @@ services:
 
   # guard:
   #   build:
-  #     context: ./dockerfiles/web
+  #     context: ./dockerfiles/web.Dockerfile
   #   description: TODO
   #   language: ruby
   #   # interfaces:
@@ -49,7 +49,7 @@ services:
   smtp:
     build:
       context: ./
-      dockerfile: ./dockerfiles/smtp
+      dockerfile: ./dockerfiles/smtp.Dockerfile
     description: TODO
     language: ruby
     interfaces:
@@ -61,13 +61,13 @@ services:
           mount_path: /app
 
   redis:
-    image: redis:4.0 # TODO: link this
+    image: redis:4.0
     interfaces:
       main: 6379
 
   # worker:
   #   build:
-  #     context: ./dockerfiles/worker
+  #     context: ./dockerfiles/worker.Dockerfile
   #   description: TODO
   #   language: ruby
     # volumes:
@@ -92,7 +92,7 @@ services:
 
   # mailcatcher:
   #   build:
-  #     context: ./dockerfiles/mailcatcher
+  #     context: ./dockerfiles/mailcatcher.Dockerfile
   #   description: TODO
   #   language: ruby
   #   interfaces:
@@ -100,7 +100,7 @@ services:
 
   # log:
   #   build:
-  #     context: ./dockerfiles/log
+  #     context: ./dockerfiles/log.Dockerfile
   #   # links db
     # volumes:
     #   app:
