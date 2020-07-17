@@ -20,9 +20,7 @@ services:
         app:
           host_path: ./
           mount_path: /app
-    # command: bundle exec rake db:setup
     # TODO: links: db, redis, smtp
-    # TODO: add migrations as part of start command?
 
   # guard:
   #   build:
@@ -90,13 +88,19 @@ services:
     #     mount_path: /var/log
   #   links: # TODO mailcatcher
 
-  # mailcatcher:
-  #   build:
-  #     context: ./dockerfiles/mailcatcher.Dockerfile
-  #   description: TODO
-  #   language: ruby
-  #   interfaces:
-  #     main: 1080
+  mailcatcher:
+    build:
+      context: ./
+      dockerfile: ./dockerfiles/mailcatcher.Dockerfile
+    description: TODO
+    language: ruby
+    interfaces:
+      main: 1080
+    # debug:
+    #   volumes:
+    #     app:
+    #       host_path: ./
+    #       mount_path: /app
 
   # log:
   #   build:
