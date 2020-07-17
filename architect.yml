@@ -22,18 +22,19 @@ services:
           mount_path: /app
     # TODO: links: db, redis, smtp
 
-  # guard:
-  #   build:
-  #     context: ./dockerfiles/web.Dockerfile
-  #   description: TODO
-  #   language: ruby
-  #   # interfaces:
-  #   #   main:
-  #   command: bundle exec guard --no-interactions
-    # volumes:
-    #   app:
-    #     host_path: ./
-    #     mount_path: /app
+  guard: #TODO: what is this for?
+    build:
+      context: ./
+      dockerfile: ./dockerfiles/web.Dockerfile
+    description: TODO
+    language: ruby
+    interfaces:
+    command: bundle exec guard --no-interactions
+    debug:
+      volumes:
+        app:
+          host_path: ./
+          mount_path: /app
   #   # TODO: links to db
 
   db:
@@ -60,26 +61,34 @@ services:
     interfaces:
       main: 6379
 
-  # worker:
-  #   build:
-  #     context: ./dockerfiles/worker.Dockerfile
-  #   description: TODO
-  #   language: ruby
-    # volumes:
-    #   app:
-    #     host_path: ./
-    #     mount_path: /app
-  #   # links: TODO db redis postfix
+  worker:
+    build:
+      context: ./
+      dockerfile: ./dockerfiles/worker.Dockerfile
+    description: TODO
+    language: ruby
+    interfaces:
+    environment:
+      REDIS_URL: redis://${ services.redis.interfaces.main.host }:${ services.redis.interfaces.main.port }
+      POSTFIX_SMTP_HOST: ${ services.postfix.interfaces.main.host }
+      POSTFIX_SMTP_PORT: ${ services.postfix.interfaces.main.port }
+    debug:
+      volumes:
+        app:
+          host_path: ./
+          mount_path: /app
+  #   # links: TODO db redis(done) postfix(done?)
 
   postfix:
     image: juanluisbaptiste/postfix
     environment:
-      SMTP_SERVER: ${ services.mailcatcher.interfaces.smtp.host } examples.cuttlefish.mailcatcher.latest # TODO: architect host
-      SMTP_PORT: ${ services.mailcatcher.interfaces.smtp.port }  # TODO: architect port
+      SMTP_SERVER: ${ services.mailcatcher.interfaces.smtp.host }
+      SMTP_PORT: ${ services.mailcatcher.interfaces.smtp.port }
       SMTP_USERNAME: foo@bar.com
       SMTP_PASSWORD: XXXXXXXX
       SERVER_HOSTNAME: cuttlefish.io
     interfaces:
+      main: 25
     debug:
       volumes:
         postfix_logs:
