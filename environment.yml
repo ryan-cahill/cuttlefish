@@ -1,5 +1,6 @@
 interfaces:
   web: ${ components['examples/cuttlefish'].interfaces.web.url }
+  # smtp: ${ components['examples/cuttlefish'].interfaces.smtp.url }
 
 components:
   examples/cuttlefish: file:./

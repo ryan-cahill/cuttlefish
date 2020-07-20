@@ -3,6 +3,7 @@ author: Architect.io
 
 interfaces:
   web: ${ services.web.interfaces.main.url }
+  # smtp: ${ services.smtp.interfaces.main.url }
 
 services:
   web:
@@ -51,6 +52,8 @@ services:
       dockerfile: ./dockerfiles/smtp.Dockerfile
     description: TODO
     language: ruby
+    environment:
+      REDIS_URL: redis://${ services.redis.interfaces.main.host }:${ services.redis.interfaces.main.port }
     interfaces:
       main: 2525
     debug:
