@@ -1,6 +1,7 @@
 interfaces:
   web: ${ components['examples/cuttlefish'].interfaces.web.url }
   # smtp: ${ components['examples/cuttlefish'].interfaces.smtp.url }
+  mailcatcher: ${ components['examples/cuttlefish'].interfaces.mailcatcher.url } # expose only in dev env config
 
 components:
   examples/cuttlefish: file:./

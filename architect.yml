@@ -4,12 +4,13 @@ author: Architect.io
 interfaces:
   web: ${ services.web.interfaces.main.url }
   # smtp: ${ services.smtp.interfaces.main.url }
+  mailcatcher: ${ services.mailcatcher.interfaces.main.url }
 
 services:
   web:
     build:
       context: ./
-      dockerfile: ./dockerfiles/web.Dockerfile
+      dockerfile: ./web.Dockerfile
     description: Frontend application for cuttlefish
     language: ruby
     interfaces:
@@ -27,7 +28,7 @@ services:
   guard: #TODO: what is this for?
     build:
       context: ./
-      dockerfile: ./dockerfiles/web.Dockerfile
+      dockerfile: ./web.Dockerfile
     description: TODO
     language: ruby
     interfaces:
@@ -49,8 +50,8 @@ services:
   smtp:
     build:
       context: ./
-      dockerfile: ./dockerfiles/smtp.Dockerfile
-    description: TODO
+      dockerfile: ./smtp.Dockerfile
+    description: Cuttlefish SMTP server
     language: ruby
     environment:
       REDIS_URL: redis://${ services.redis.interfaces.main.host }:${ services.redis.interfaces.main.port }
@@ -70,7 +71,7 @@ services:
   worker:
     build:
       context: ./
-      dockerfile: ./dockerfiles/worker.Dockerfile
+      dockerfile: ./worker.Dockerfile
     description: TODO
     language: ruby
     interfaces:
@@ -100,10 +101,10 @@ services:
           host_path: ./postfix_log
           mount_path: /var/log
 
-  mailcatcher:
+  mailcatcher: # TODO: dev services? this should most likely only be used for development
     build:
       context: ./
-      dockerfile: ./dockerfiles/mailcatcher.Dockerfile
+      dockerfile: ./mailcatcher.Dockerfile
     description: TODO
     language: ruby
     interfaces:
@@ -113,7 +114,7 @@ services:
   log: # TODO: this needs to be started after the web migrations have already been run at least once. how do we handle this? does the log container have resiliency? or use a readiness probe on the web container?
     build:
       context: ./
-      dockerfile: ./dockerfiles/log.Dockerfile
+      dockerfile: ./log.Dockerfile
     interfaces:
     debug:
       volumes:
