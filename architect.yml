@@ -16,12 +16,12 @@ services:
     environment:
       PORT: ${ services.web.interfaces.main.port }
       REDIS_URL: redis://${ services.redis.interfaces.main.host }:${ services.redis.interfaces.main.port }
+      CUTTLEFISH_DOMAIN: ${ services.smtp.interfaces.main.host }
     debug:
       volumes:
         app:
           host_path: ./
           mount_path: /app
-    # TODO: links: db, redis, smtp
 
   guard: #TODO: what is this for?
     build:
@@ -36,7 +36,6 @@ services:
         app:
           host_path: ./
           mount_path: /app
-  #   # TODO: links to db
 
   db:
     image: postgres:10.5
@@ -78,7 +77,6 @@ services:
         app:
           host_path: ./
           mount_path: /app
-  #   # links: TODO db redis(done) postfix(done?)
 
   postfix:
     image: juanluisbaptiste/postfix
@@ -119,6 +117,5 @@ services:
         postfix_logs:
           host_path: ./postfix_log
           mount_path: /var/log
-    # links db ?
 
 # TODO: debug blocks, volumes, env vars in place of links
