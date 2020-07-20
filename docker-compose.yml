@@ -52,7 +52,7 @@ services:
       - postfix
 
   postfix:
-    image: juanluisbaptiste/postfix.Dockerfile
+    image: juanluisbaptiste/postfix
     environment:
       - SMTP_SERVER=mailcatcher
       - SMTP_PORT=1025
