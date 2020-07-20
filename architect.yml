@@ -41,6 +41,9 @@ services:
     image: postgres:10.5
     interfaces:
       postgres: 5432
+    environment:
+      POSTGRES_DB: cuttlefish_development # TODO: these params need to exist as the database needs to be provisioned before other containers are run. at least a name change is necessary
+      POSTGRES_USER: postgres
 
   smtp:
     build:
@@ -104,7 +107,7 @@ services:
       main: 1080
       smtp: 1025
 
-  log:
+  log: # TODO: this needs to be started after the web migrations have already been run at least once. how do we handle this? does the log container have resiliency? or use a readiness probe on the web container?
     build:
       context: ./
       dockerfile: ./dockerfiles/log.Dockerfile
@@ -117,5 +120,3 @@ services:
         postfix_logs:
           host_path: ./postfix_log
           mount_path: /var/log
-
-# TODO: debug blocks, volumes, env vars in place of links

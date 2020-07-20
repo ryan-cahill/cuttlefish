@@ -33,7 +33,10 @@ module Filters
     end
 
     def in_correct_domain?(mail, domain)
-      (mail.sender || mail.from.first).split("@")[1] == domain
+      sender = (mail.sender || (mail.from && mail.from.first))
+      if sender
+        sender.split("@")[1] == domain
+      end
     end
   end
 end
