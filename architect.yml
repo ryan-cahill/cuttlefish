@@ -15,6 +15,7 @@ services:
       main: 3000
     environment:
       PORT: ${ services.web.interfaces.main.port }
+      REDIS_URL: redis://${ services.redis.interfaces.main.host }:${ services.redis.interfaces.main.port }
     debug:
       volumes:
         app:
