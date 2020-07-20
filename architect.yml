@@ -3,20 +3,19 @@ author: Architect.io
 
 interfaces:
   web: ${ services.web.interfaces.main.url }
-  # smtp: ${ services.smtp.interfaces.main.url }
+  # smtp: ${ services.smtp.interfaces.main.url } # we need the option of smtp for interfaces
   mailcatcher: ${ services.mailcatcher.interfaces.main.url }
 
 services:
   web:
     build:
       context: ./
-      dockerfile: ./web.Dockerfile
+      dockerfile: ./web.Dockerfile # TODO: find way to run migrations ahead of time
     description: Frontend application for cuttlefish
     language: ruby
     interfaces:
       main: 3000
     environment:
-      PORT: ${ services.web.interfaces.main.port }
       REDIS_URL: redis://${ services.redis.interfaces.main.host }:${ services.redis.interfaces.main.port }
       CUTTLEFISH_DOMAIN: ${ services.smtp.interfaces.main.host }
     debug:
@@ -25,19 +24,19 @@ services:
           host_path: ./
           mount_path: /app
 
-  guard: #TODO: what is this for?
-    build:
-      context: ./
-      dockerfile: ./web.Dockerfile
-    description: TODO
-    language: ruby
-    interfaces:
-    command: bundle exec guard --no-interactions
-    debug:
-      volumes:
-        app:
-          host_path: ./
-          mount_path: /app
+  # guard: # TODO: unclear if this works on mac or windows. not linux as the Guardfile is currently written. dev-only service
+  #   build:
+  #     context: ./
+  #     dockerfile: ./web.Dockerfile
+  #   description: TODO why is this a different dockerfile?
+  #   language: ruby
+  #   interfaces:
+  #   command: bundle exec guard --no-interactions
+  #   debug:
+  #     volumes:
+  #       app:
+  #         host_path: ./
+  #         mount_path: /app
 
   db:
     image: postgres:10.5

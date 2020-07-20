@@ -1,6 +1,6 @@
 interfaces:
   web: ${ components['examples/cuttlefish'].interfaces.web.url }
-  # smtp: ${ components['examples/cuttlefish'].interfaces.smtp.url }
+  # smtp: ${ components['examples/cuttlefish'].interfaces.smtp.url } # we need the option of smtp for interfaces
   mailcatcher: ${ components['examples/cuttlefish'].interfaces.mailcatcher.url } # expose only in dev env config
 
 components:
